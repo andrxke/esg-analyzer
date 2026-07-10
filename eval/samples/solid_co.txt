@@ -1,0 +1,22 @@
+SYNTHETIC FIXTURE — NOT A REAL COMPANY. For eval-harness testing only.
+
+Solid Co. Sustainability Report (synthetic)
+
+Solid Co. reports its full greenhouse gas inventory across all three scopes.
+Scope 1 emissions were 30,000 tCO2e. Scope 2 emissions were 12,000 tCO2e.
+Scope 3 emissions, covering our full value chain, were 480,000 tCO2e.
+
+Against a 2019 baseline of 600,000 tCO2e total, we have reduced absolute
+emissions by 18% as of this reporting year. These reductions come from direct
+operational changes, not offsets.
+
+Our targets are milestoned and specific. We commit to a 50% absolute reduction
+by 2030 against the 2019 baseline, an interim checkpoint of 30% by 2027, and
+net-zero by 2050. Progress against each interim target is reported annually.
+
+We do not claim carbon neutrality. We report our residual emissions honestly and
+describe the specific decarbonization levers, capital allocation, and supplier
+engagement programs behind each target so readers can hold us to them.
+
+This report avoids superlatives and states figures with their baselines so that
+every claim can be measured against a defined starting point and target year.

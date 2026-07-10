@@ -1,0 +1,16 @@
+[
+  {
+    "company": "GreenWash Co. (synthetic)",
+    "source": "samples/greenwash_co.txt",
+    "expected_state": "Not Recommended",
+    "expected_tells": ["T1", "T2", "T3", "T4", "T5"],
+    "note": "Offset-based neutrality (T3) + unbaselined reduction claim (T1) + Scope 3 omitted while 1/2 disclosed (T2) + net-zero 2050 with no interim milestone (T4) + bare superlatives (T5). Multiple major tells -> Not Recommended."
+  },
+  {
+    "company": "Solid Co. (synthetic)",
+    "source": "samples/solid_co.txt",
+    "expected_state": "Recommended",
+    "expected_tells": [],
+    "note": "Full three-scope inventory, baselined reductions, milestoned targets (2027/2030/2050), no offset-neutrality claim, no bare superlatives. No tells fire."
+  }
+]

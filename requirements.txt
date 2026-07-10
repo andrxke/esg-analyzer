@@ -1,0 +1,11 @@
+# Core analyzer + full test suite: ZERO third-party dependencies (stdlib only).
+#   python3 -m pytest tests/
+#
+# Optional extras, only needed at the edges:
+#   pypdf   — real PDF text extraction (PdfTextExtractor). Not needed for .txt/.md.
+#   openai  — OpenRouter is OpenAI-compatible; needed only to run the live eval.
+#
+# Install extras when you need them:
+#   pip install pypdf openai
+pypdf>=4.0
+openai>=1.0

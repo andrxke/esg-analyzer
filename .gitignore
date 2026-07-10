@@ -1,0 +1,19 @@
+# Secrets — never commit keys. Use env vars (OPENROUTER_API_KEY).
+.env
+.env.*
+*.key
+secrets.*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# OS
+.DS_Store
+
+# Eval scratch
+eval/_bad_manifest_tmp*.json
