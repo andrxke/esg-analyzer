@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "hm-group",
+    "company": "H&M Group",
+    "label": "Not Recommended",
+    "state": "Not Recommended",
+    "is_publishable": true
+  },
+  {
+    "slug": "greenwash-co",
+    "company": "GreenWash Co.",
+    "label": "Not Recommended",
+    "state": "Not Recommended",
+    "is_publishable": true
+  },
+  {
+    "slug": "solid-co",
+    "company": "Solid Co.",
+    "label": "Recommended",
+    "state": "Recommended",
+    "is_publishable": true
+  },
+  {
+    "slug": "middling-corp",
+    "company": "Middling Corp.",
+    "label": "Not Recommended",
+    "state": "Not Recommended",
+    "is_publishable": true
+  },
+  {
+    "slug": "boundary-ltd",
+    "company": "BoundaryCase Ltd.",
+    "label": "Recommended",
+    "state": "Recommended",
+    "is_publishable": true
+  }
+]

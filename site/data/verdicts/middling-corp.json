@@ -1,0 +1,31 @@
+{
+  "company": "Middling Corp.",
+  "state": "Not Recommended",
+  "label": "Not Recommended",
+  "source_hash": "7380015e1caa747c0d2c9a1ca72592c77ec64b96a7cb4076f1d5e3109d542118",
+  "notes": "",
+  "findings": [
+    {
+      "tell_id": "T1",
+      "severity": "major",
+      "tier": "tier2",
+      "rationale": "This claim mentions significant reductions in environmental footprint without providing a baseline value or year.",
+      "quote": "We have made significant reductions in our environmental footprint and are proud of the progress achieved across our operations this past year."
+    },
+    {
+      "tell_id": "T1",
+      "severity": "major",
+      "tier": "tier2",
+      "rationale": "This claim asserts continuous improvement in environmental performance without specifying the metric, baseline value, or baseline year.",
+      "quote": "We continue to improve year over year."
+    }
+  ],
+  "slug": "middling-corp",
+  "provenance": {
+    "publisher": "Middling Corp. (synthetic sample)",
+    "edition_year": 2025,
+    "title": "Sustainability Report 2025 (synthetic test fixture)",
+    "url": "",
+    "retrieved": "2026-07-10"
+  }
+}

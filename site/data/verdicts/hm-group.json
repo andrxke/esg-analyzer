@@ -1,0 +1,31 @@
+{
+  "company": "H&M Group",
+  "state": "Not Recommended",
+  "label": "Not Recommended",
+  "source_hash": "4e9f5fb2fa969753ed8b86da996312835e27667a0ec8552f0a030d3861f0762b",
+  "notes": "",
+  "findings": [
+    {
+      "tell_id": "T1",
+      "severity": "major",
+      "tier": "tier2",
+      "rationale": "This claim states a percentage reduction in Scope 3 emissions but does not provide the baseline value or baseline year for this reduction.",
+      "quote": "34.6% reduction in Scope 3 greenhouse\ngas emiss ions"
+    },
+    {
+      "tell_id": "T1",
+      "severity": "major",
+      "tier": "tier2",
+      "rationale": "This statement provides percentage reductions for Scope 1, 2, and 3 emissions but does not explicitly state the baseline value or baseline year for these reductions within this sentence, even though it's mentioned elsewhere.",
+      "quote": "Our efforts to reduce greenhouse gas emissions along our val ue chain and optimise resource use have continued to pay off. During the year our greenhouse gas emissions in Scope 1 and 2 decreased by 41 percent and in Scope 3 by 34.6 percent."
+    }
+  ],
+  "slug": "hm-group",
+  "provenance": {
+    "publisher": "H&M Group",
+    "edition_year": 2025,
+    "title": "Annual and Sustainability Report 2025",
+    "url": "https://hmgroup.com/sustainability/",
+    "retrieved": "2026-07-14"
+  }
+}

@@ -207,9 +207,12 @@ deletions. So the flagship feature is **not** "ask the model what changed." Inst
 
 ## Open Questions
 
-- **LLM provider for zero-cost:** which free/cheap tier is most reliable for the batch runs
-  vs. the (rate-limited) live path, given the ~15–30k-token filtered-input budget? Decide at
-  eng-review, after the Next Step #2 token measurement.
+- **LLM provider (DECIDED 2026-07-10): OpenRouter**, via its OpenAI-compatible Chat Completions
+  API (the `openai` SDK pointed at `https://openrouter.ai/api/v1`). Key lives in the
+  `OPENROUTER_API_KEY` env var — never in code or committed files. Model default
+  `anthropic/claude-3.5-sonnet`, override via `ESG_EVAL_MODEL`. Client is a single swappable seam
+  (`OpenRouterClient` in `eval/run_eval.py`). Still open: confirm the filtered-input token counts
+  fit the ~15–30k budget on real reports (Next Step #3 measurement).
 - **Label thresholds:** what exactly moves a company from Improving to Not Recommended? Needs
   a written, defensible rubric so verdicts are consistent and explainable. (Next Step #1.)
 - **Report freshness / sourcing:** record which report edition (publisher, year, URL, date

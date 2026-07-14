@@ -1,0 +1,22 @@
+SYNTHETIC FIXTURE — NOT A REAL COMPANY. For eval-harness testing only.
+
+Middling Corp. Sustainability Report (synthetic)
+
+Middling Corp. publishes its full greenhouse gas inventory. Scope 1 emissions
+were 55,000 tCO2e. Scope 2 emissions were 22,000 tCO2e. Scope 3 emissions
+were 310,000 tCO2e, covering upstream and downstream value chain activities.
+
+We have made significant reductions in our environmental footprint and are proud
+of the progress achieved across our operations this past year. We continue to
+improve year over year.
+
+Our target is to reach net-zero emissions by 2050, supported by an interim
+milestone of 40% absolute reduction by 2030 against our 2020 baseline of
+450,000 tCO2e total. Progress is tracked annually.
+
+Middling Corp. does not purchase carbon offsets to claim neutrality. All
+reported reductions reflect direct operational changes, energy procurement
+shifts, and supplier engagement programs.
+
+We publish our full methodology and data tables in the appendix so that readers
+can verify every figure against a defined baseline and target trajectory.

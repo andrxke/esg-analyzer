@@ -1,0 +1,70 @@
+{
+  "tells": [
+    {
+      "tell_id": "T1",
+      "name": "Unbaselined headline claim",
+      "severity": "major",
+      "tier": "tier2",
+      "deferred": false,
+      "description": "A reduction or improvement claim with no baseline value and no baseline year — progress you can't measure against a starting point."
+    },
+    {
+      "tell_id": "T2",
+      "name": "Missing or unquantified Scope 3",
+      "severity": "major",
+      "tier": "tier1",
+      "deferred": false,
+      "description": "Scope 1/2 emissions are disclosed but Scope 3 (usually the majority of the real footprint) is absent or given no number."
+    },
+    {
+      "tell_id": "T3",
+      "name": "Offset-dependent neutrality",
+      "severity": "major",
+      "tier": "tier2",
+      "deferred": false,
+      "description": "A 'carbon neutral' / 'net zero today' claim achieved mostly through purchased offsets rather than actual emissions cuts."
+    },
+    {
+      "tell_id": "T4",
+      "name": "Long-dated target, no interim milestones",
+      "severity": "minor",
+      "tier": "tier1",
+      "deferred": false,
+      "description": "A far-off target (e.g. net-zero 2050) with no nearer interim milestone and no stated path to get there."
+    },
+    {
+      "tell_id": "T5",
+      "name": "Vague superlative, no number",
+      "severity": "minor",
+      "tier": "tier2",
+      "deferred": false,
+      "description": "Qualitative bragging — 'industry-leading', 'world-class' — standing in for any measurable performance figure."
+    },
+    {
+      "tell_id": "T6",
+      "name": "Goalpost shifting",
+      "severity": "major",
+      "tier": "tier2",
+      "deferred": true,
+      "description": "A target present in last year's report is absent or weakened this year (deferred to a later release)."
+    }
+  ],
+  "thresholds": [
+    {
+      "label": "Not Recommended",
+      "rule": "2 or more Major tells."
+    },
+    {
+      "label": "Improving",
+      "rule": "Exactly 1 Major tell, or 2+ Minor tells with no Major."
+    },
+    {
+      "label": "Recommended",
+      "rule": "0 Major tells and at most 1 Minor tell."
+    },
+    {
+      "label": "insufficient-data",
+      "rule": "Extraction failed, report too thin to assess, or all quotes dropped by the verbatim-quote gate. Never collapses to Recommended."
+    }
+  ]
+}

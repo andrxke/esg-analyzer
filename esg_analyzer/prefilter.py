@@ -40,7 +40,36 @@ def _blocks(text: str) -> list[str]:
     parts = re.split(r"\n\s*\n", text)
     if len(parts) == 1:
         parts = text.split("\n")
-    return [p.strip() for p in parts if p.strip()]
+    
+    # PDF extraction can result in massive blocks (e.g., a whole page as one line).
+    # If a block is too large, it will consume the entire token budget just because
+    # one signal word was in it. We forcefully split huge blocks into ~1000 char chunks.
+    MAX_BLOCK_SIZE = 1000
+    refined_blocks = []
+    
+    for p in parts:
+        p = p.strip()
+        if not p:
+            continue
+        if len(p) <= MAX_BLOCK_SIZE:
+            refined_blocks.append(p)
+        else:
+            # Force split large blocks into chunks to prevent budget hoarding
+            words = p.split()
+            current_chunk = []
+            current_len = 0
+            for w in words:
+                if current_len + len(w) > MAX_BLOCK_SIZE:
+                    refined_blocks.append(" ".join(current_chunk))
+                    current_chunk = [w]
+                    current_len = len(w) + 1
+                else:
+                    current_chunk.append(w)
+                    current_len += len(w) + 1
+            if current_chunk:
+                refined_blocks.append(" ".join(current_chunk))
+                
+    return refined_blocks
 
 
 def filtered_size(text: str) -> int:
@@ -70,13 +99,22 @@ def prefilter(text: str, char_budget: int = DEFAULT_CHAR_BUDGET) -> str:
     for block in _blocks(text):
         if _SIGNAL_RE.search(block) is None:
             continue
-        if used + len(block) > char_budget:
+            
+        block_len = len(block)
+        # Account for the \n\n that will be added
+        if kept:
+            block_len += 2
+            
+        if used + block_len > char_budget:
             # Truncate the final block to fit the budget exactly, then stop.
             remaining = char_budget - used
+            if kept:
+                remaining -= 2
             if remaining > 0:
                 kept.append(block[:remaining])
             break
+            
         kept.append(block)
-        used += len(block)
+        used += block_len
 
     return "\n\n".join(kept)

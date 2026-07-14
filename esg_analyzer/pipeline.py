@@ -51,8 +51,18 @@ def source_hash(text: str) -> str:
 
 def _parse_json(raw: str):
     import json
-
-    return json.loads(raw)
+    
+    # Strip markdown code blocks if the LLM wrapped its JSON output
+    cleaned = raw.strip()
+    if cleaned.startswith("```"):
+        # Find the first newline to skip "```json" or similar
+        lines = cleaned.split("\n")
+        if len(lines) > 1:
+            cleaned = "\n".join(lines[1:])
+        if cleaned.endswith("```"):
+            cleaned = cleaned[:-3].strip()
+            
+    return json.loads(cleaned)
 
 
 def _run_tier2(

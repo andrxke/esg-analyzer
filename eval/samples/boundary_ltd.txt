@@ -1,0 +1,22 @@
+SYNTHETIC FIXTURE — NOT A REAL COMPANY. For eval-harness testing only.
+
+BoundaryCase Ltd. Sustainability Report (synthetic)
+
+BoundaryCase Ltd. reports its full greenhouse gas inventory. Scope 1 emissions
+were 38,000 tCO2e. Scope 2 emissions were 15,000 tCO2e. Scope 3 emissions
+were 520,000 tCO2e across our full upstream and downstream value chain.
+
+Against a 2018 baseline of 680,000 tCO2e total, we have reduced absolute
+emissions by 16%. These reductions are driven by operational efficiency and
+renewable energy procurement.
+
+We commit to net-zero by 2050, with interim milestones of 35% reduction by 2030
+and 20% by 2027, both measured against the 2018 baseline. Progress is tracked
+and reported annually.
+
+BoundaryCase Ltd. is proud to be among the greenest companies in our industry,
+delivering world-class performance across every dimension of sustainability.
+
+We do not purchase carbon offsets or claim neutrality through external
+mechanisms. All emissions figures and reduction claims are baselined and
+verifiable in our published data appendix.

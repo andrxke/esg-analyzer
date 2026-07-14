@@ -123,7 +123,7 @@ class TestGoldenSetEndToEnd(unittest.TestCase):
     """
 
     def _llm_for(self, company: str):
-        # Verbatim quotes copied from eval/samples/greenwash_co.txt.
+        # Verbatim quotes copied from eval/samples/*.txt.
         if "GreenWash" in company:
             return FakeLLM([
                 {"tell_id": "T3",
@@ -135,6 +135,20 @@ class TestGoldenSetEndToEnd(unittest.TestCase):
                 {"tell_id": "T5",
                  "quote": "industry-leading, world-class leader",
                  "rationale": "bare superlative"},
+            ])
+        if "Middling" in company:
+            # Verbatim from middling_corp.txt — the one unbaselined claim.
+            return FakeLLM([
+                {"tell_id": "T1",
+                 "quote": "significant reductions in our environmental footprint",
+                 "rationale": "reduction claim with no baseline value or year"},
+            ])
+        if "Boundary" in company:
+            # Verbatim from boundary_ltd.txt — bare superlatives.
+            return FakeLLM([
+                {"tell_id": "T5",
+                 "quote": "among the greenest companies in our industry,\ndelivering world-class performance across every dimension of sustainability",
+                 "rationale": "bare superlative with no quantification"},
             ])
         return FakeLLM([])  # Solid Co. — clean
 
@@ -154,6 +168,24 @@ class TestGoldenSetEndToEnd(unittest.TestCase):
         self.assertEqual(r.actual_state, "Recommended")
         self.assertTrue(r.label_match)
 
+    def test_middling_corp_improving(self):
+        """Middling Corp: 1 major tell (T1) -> Improving."""
+        cases = [c for c in load_manifest(EVAL_DIR / "golden.json") if "Middling" in c.company]
+        from esg_analyzer.adapters import PdfTextExtractor
+        report = run_eval(cases, PdfTextExtractor(), self._llm_for("Middling"), base_dir=EVAL_DIR)
+        r = report.results[0]
+        self.assertEqual(r.actual_state, "Improving")
+        self.assertTrue(r.label_match)
+
+    def test_boundary_ltd_recommended(self):
+        """BoundaryCase Ltd: 1 minor tell (T5) -> Recommended."""
+        cases = [c for c in load_manifest(EVAL_DIR / "golden.json") if "Boundary" in c.company]
+        from esg_analyzer.adapters import PdfTextExtractor
+        report = run_eval(cases, PdfTextExtractor(), self._llm_for("Boundary"), base_dir=EVAL_DIR)
+        r = report.results[0]
+        self.assertEqual(r.actual_state, "Recommended")
+        self.assertTrue(r.label_match)
+
     def test_format_report_runs(self):
         cases = load_manifest(EVAL_DIR / "golden.json")
         from esg_analyzer.adapters import PdfTextExtractor
@@ -163,8 +195,15 @@ class TestGoldenSetEndToEnd(unittest.TestCase):
             def __init__(self, outer):
                 self.outer = outer
             def complete(self, prompt, report_text):
-                # Superlative phrase only appears in the GreenWash fixture.
-                company = "GreenWash" if "world-class" in report_text else "Solid"
+                # Detect fixture by unique phrases in the report text.
+                if "world-class leader" in report_text:
+                    company = "GreenWash"
+                elif "significant reductions in our environmental footprint" in report_text and "world-class" not in report_text:
+                    company = "Middling"
+                elif "among the greenest" in report_text:
+                    company = "Boundary"
+                else:
+                    company = "Solid"
                 return self.outer._llm_for(company).complete(prompt, report_text)
 
         report = run_eval(cases, PdfTextExtractor(), Dispatch(self), base_dir=EVAL_DIR)

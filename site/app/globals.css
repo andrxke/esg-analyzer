@@ -1,0 +1,661 @@
+/* ============================================================================
+   ESG Report Check — "The Dossier"
+   A forensic case-file aesthetic: ink on archival paper, verdicts as
+   classification stamps, the company's own words as exhibits. Deliberately not
+   the eco-brochure green — this tool is the auditor, not the brochure.
+
+   Type carries a thesis: Fraunces (serif) = human judgment; IBM Plex Mono =
+   machine-verified fact (tell IDs, hashes, the verbatim gate).
+   ============================================================================ */
+
+:root {
+  /* Archival paper + ink. Cool, not cream — avoids the terracotta/cream default. */
+  --paper: #eae7de;
+  --paper-2: #e2ded2;
+  --paper-line: #cec9ba;
+  --ink: #16150f;
+  --ink-2: #4a4739;
+  --ink-3: #736f5e;
+
+  /* The only chromatic color in the system is the verdict itself. */
+  --rec: #1c5d4c;
+  --imp: #9c6410;
+  --not: #9e2b1e;
+
+  --paper-rec: #d7e4dd;
+  --paper-imp: #ece0cb;
+  --paper-not: #ecd6d1;
+
+  --link: #1c5d4c;
+  --maxw: 720px;
+  --wide: 940px;
+
+  --serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  /* faint paper tooth */
+  background-image: radial-gradient(rgba(22, 21, 15, 0.022) 1px, transparent 1px);
+  background-size: 4px 4px;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- machine layer: everything the code verified is set in mono ---- */
+.mono {
+  font-family: var(--mono);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--not);
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+}
+
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+/* ============================================================================
+   Masthead — a nameplate, ruled like a broadsheet register
+   ============================================================================ */
+.masthead {
+  border-bottom: 2px solid var(--ink);
+}
+.masthead .inner {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.masthead .brand {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.masthead .brand .mk {
+  color: var(--not);
+}
+.masthead nav {
+  display: flex;
+  gap: 1.4rem;
+}
+.masthead nav a {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.masthead nav a:hover {
+  color: var(--not);
+}
+
+.colophon {
+  border-top: 1px solid var(--paper-line);
+  margin-top: 4rem;
+}
+.colophon .inner {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 2.5rem;
+  color: var(--ink-3);
+  font-size: 0.9rem;
+  max-inline-size: 60ch;
+}
+
+/* ============================================================================
+   Landing — a docket. Thesis line, then a ruled ledger of cases.
+   ============================================================================ */
+.hero {
+  padding: 1rem 0 0.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.4rem, 6vw, 3.9rem);
+  margin: 0.4rem 0 0;
+  font-weight: 500;
+}
+.hero .lede {
+  font-size: 1.2rem;
+  color: var(--ink-2);
+  max-inline-size: 40ch;
+  margin: 1.1rem 0 0;
+}
+.hero .lede strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ledger */
+.ledger {
+  margin: 2.75rem 0 0;
+  border-top: 2px solid var(--ink);
+}
+.ledger-head,
+.case {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+.ledger-head {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--ink);
+}
+.ledger-head span {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.ledger-head .r {
+  text-align: right;
+}
+.case {
+  padding: 1.05rem 0;
+  border-bottom: 1px solid var(--paper-line);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.12s ease;
+}
+.case:hover {
+  background: var(--paper-2);
+}
+.case .no {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+.case .co {
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.case .co .sub {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-top: 0.15rem;
+}
+
+/* ============================================================================
+   Verdict "stamp" — the signature element
+   ============================================================================ */
+.stamp {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem 1.15rem;
+  border: 2.5px solid currentColor;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1.5px var(--paper), 0 0 0 3.5px currentColor;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  transform: rotate(-2.5deg);
+  line-height: 1;
+  user-select: none;
+}
+.stamp .tag {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  opacity: 0.72;
+}
+.stamp .verdict {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.stamp--recommended {
+  color: var(--rec);
+}
+.stamp--improving {
+  color: var(--imp);
+}
+.stamp--not-recommended {
+  color: var(--not);
+}
+
+/* small inline chip for the ledger (a quiet version of the stamp) */
+.chip {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.6rem;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.chip--recommended {
+  color: var(--rec);
+  background: var(--paper-rec);
+}
+.chip--improving {
+  color: var(--imp);
+  background: var(--paper-imp);
+}
+.chip--not-recommended {
+  color: var(--not);
+  background: var(--paper-not);
+}
+
+/* ============================================================================
+   Verdict page — a case file
+   ============================================================================ */
+.backlink {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.case-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin: 1.25rem 0 0;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--ink);
+  flex-wrap: wrap;
+}
+.case-head h1 {
+  font-size: clamp(2.3rem, 6vw, 3.4rem);
+  margin: 0.5rem 0 0;
+}
+.case-head .gloss {
+  color: var(--ink-2);
+  font-size: 1.05rem;
+  margin: 0.6rem 0 0;
+  max-inline-size: 34ch;
+}
+.stamp-wrap {
+  flex-shrink: 0;
+  padding-top: 0.5rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stamp-wrap .stamp {
+    animation: ink-in 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+}
+@keyframes ink-in {
+  from {
+    opacity: 0;
+    transform: rotate(-2.5deg) scale(1.35);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-2.5deg) scale(1);
+  }
+}
+
+/* the assessment / opinion framing — the legal surface, set as a standfirst */
+.standfirst {
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  border-left: 3px solid var(--ink);
+  padding: 0.35rem 0 0.35rem 1.15rem;
+  margin: 2rem 0;
+  max-inline-size: 54ch;
+}
+.standfirst strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--paper-line);
+  padding-bottom: 0.5rem;
+  margin: 3rem 0 0;
+}
+
+/* exhibits — the company's own words, numbered as a sequence of evidence */
+.exhibit {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--paper-line);
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: 1rem;
+}
+.exhibit .idx {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  padding-top: 0.35rem;
+}
+.exhibit .tell {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.exhibit .tell .name {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.exhibit .tell .sev {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.12rem 0.42rem;
+  border-radius: 2px;
+}
+.sev--major {
+  color: var(--not);
+  background: var(--paper-not);
+}
+.sev--minor {
+  color: var(--imp);
+  background: var(--paper-imp);
+}
+.exhibit .rationale {
+  margin: 0.5rem 0 0;
+  color: var(--ink-2);
+}
+.exhibit blockquote {
+  margin: 0.9rem 0 0;
+  font-size: 1.35rem;
+  line-height: 1.4;
+  font-weight: 400;
+  text-indent: -0.4em;
+}
+.exhibit blockquote .verify {
+  display: block;
+  margin-top: 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--rec);
+  text-indent: 0;
+}
+.exhibit blockquote cite {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-style: normal;
+  letter-spacing: 0.03em;
+  color: var(--ink-3);
+  text-indent: 0;
+}
+.exhibit--nofindings {
+  color: var(--ink-2);
+}
+
+/* rubric / criteria tables */
+.dossier-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0 0;
+}
+.dossier-table th {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: left;
+  padding: 0 0.7rem 0.55rem 0;
+  border-bottom: 1px solid var(--ink);
+}
+.dossier-table td {
+  padding: 0.7rem 0.7rem 0.7rem 0;
+  border-bottom: 1px solid var(--paper-line);
+  vertical-align: top;
+  font-size: 0.96rem;
+}
+.dossier-table td:first-child {
+  font-weight: 500;
+  white-space: nowrap;
+}
+.dossier-table .cap {
+  text-transform: capitalize;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+
+/* provenance colophon — a citation at the foot of the file */
+.provenance {
+  margin: 2.75rem 0 0;
+  padding: 1.5rem;
+  background: var(--paper-2);
+  border: 1px solid var(--paper-line);
+  border-radius: 4px;
+}
+.provenance .section-label {
+  margin-top: 0;
+  border-bottom-color: var(--paper-line);
+}
+.provenance dl {
+  margin: 0.9rem 0 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.5rem;
+  font-size: 0.9rem;
+}
+.provenance dt {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 0.15rem;
+}
+.provenance dd {
+  margin: 0;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* ============================================================================
+   Newsletter + request — kept quiet; the stamp is the only loud thing
+   ============================================================================ */
+.subscribe {
+  margin: 3.5rem 0 0;
+  padding: 1.75rem;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--paper-2);
+}
+.subscribe h2 {
+  margin: 0.4rem 0 0;
+  font-size: 1.5rem;
+}
+.subscribe p {
+  color: var(--ink-2);
+  margin: 0.4rem 0 0;
+}
+.subscribe form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.subscribe input[type="email"] {
+  flex: 1 1 240px;
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.95rem;
+}
+.subscribe input[type="email"]::placeholder {
+  color: var(--ink-3);
+}
+
+.btn {
+  padding: 0.7rem 1.4rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.btn:hover {
+  background: var(--not);
+  border-color: var(--not);
+  color: var(--paper);
+}
+
+.request {
+  margin: 2.5rem 0 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--paper-line);
+}
+.request h2 {
+  font-size: 1.35rem;
+  margin: 0.3rem 0 0;
+}
+.request p {
+  color: var(--ink-2);
+  margin: 0.35rem 0 0.9rem;
+}
+
+.err {
+  color: var(--not);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  margin: 0.6rem 0 0;
+}
+.hint {
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  margin: 0.6rem 0 0;
+}
+.muted {
+  color: var(--ink-3);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* prose defaults for the methodology page */
+.prose p,
+.prose li {
+  max-inline-size: 62ch;
+}
+.prose h2 {
+  font-size: 1.7rem;
+  margin: 2.75rem 0 0;
+}
+.prose ul {
+  padding-left: 1.1rem;
+}
+.prose li {
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 560px) {
+  .ledger-head,
+  .case {
+    grid-template-columns: 2.4rem 1fr;
+  }
+  .ledger-head .r,
+  .case .chip {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+  .exhibit {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+  .case-head {
+    flex-direction: column-reverse;
+  }
+}

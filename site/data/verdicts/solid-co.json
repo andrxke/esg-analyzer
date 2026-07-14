@@ -1,0 +1,16 @@
+{
+  "company": "Solid Co.",
+  "state": "Recommended",
+  "label": "Recommended",
+  "source_hash": "19547ce5fd0bec358ac1011efc0327f81ecc8ad3c9d1e4674726b8966c0f0d5e",
+  "notes": "no greenwashing tells found in this report",
+  "findings": [],
+  "slug": "solid-co",
+  "provenance": {
+    "publisher": "Solid Co. (synthetic sample)",
+    "edition_year": 2025,
+    "title": "Sustainability Report 2025 (synthetic test fixture)",
+    "url": "",
+    "retrieved": "2026-07-10"
+  }
+}

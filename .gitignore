@@ -17,3 +17,11 @@ venv/
 
 # Eval scratch
 eval/_bad_manifest_tmp*.json
+
+# Next.js site build artifacts (site/data/ is committed — it's the build input)
+site/node_modules/
+site/.next/
+site/out/
+site/next-env.d.ts
+site/.vercel/
+*.tsbuildinfo

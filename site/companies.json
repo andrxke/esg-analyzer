@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "hm-group",
+    "company": "H&M Group",
+    "source": "../eval/samples/HM-Group-Annual-and-sustainability-report-2025.pdf",
+    "provenance": {
+      "publisher": "H&M Group",
+      "edition_year": 2025,
+      "title": "Annual and Sustainability Report 2025",
+      "url": "https://hmgroup.com/sustainability/",
+      "retrieved": "2026-07-14"
+    }
+  },
+  {
+    "slug": "greenwash-co",
+    "company": "GreenWash Co.",
+    "source": "../eval/samples/greenwash_co.txt",
+    "provenance": {
+      "publisher": "GreenWash Co. (synthetic sample)",
+      "edition_year": 2025,
+      "title": "Sustainability Report 2025 (synthetic test fixture)",
+      "url": "",
+      "retrieved": "2026-07-10"
+    }
+  },
+  {
+    "slug": "solid-co",
+    "company": "Solid Co.",
+    "source": "../eval/samples/solid_co.txt",
+    "provenance": {
+      "publisher": "Solid Co. (synthetic sample)",
+      "edition_year": 2025,
+      "title": "Sustainability Report 2025 (synthetic test fixture)",
+      "url": "",
+      "retrieved": "2026-07-10"
+    }
+  },
+  {
+    "slug": "middling-corp",
+    "company": "Middling Corp.",
+    "source": "../eval/samples/middling_corp.txt",
+    "provenance": {
+      "publisher": "Middling Corp. (synthetic sample)",
+      "edition_year": 2025,
+      "title": "Sustainability Report 2025 (synthetic test fixture)",
+      "url": "",
+      "retrieved": "2026-07-10"
+    }
+  },
+  {
+    "slug": "boundary-ltd",
+    "company": "BoundaryCase Ltd.",
+    "source": "../eval/samples/boundary_ltd.txt",
+    "provenance": {
+      "publisher": "BoundaryCase Ltd. (synthetic sample)",
+      "edition_year": 2025,
+      "title": "Sustainability Report 2025 (synthetic test fixture)",
+      "url": "",
+      "retrieved": "2026-07-10"
+    }
+  }
+]

@@ -374,5 +374,145 @@ class TestSourceHash(unittest.TestCase):
         self.assertNotEqual(source_hash("abc"), source_hash("abd"))
 
 
+# --------------------------------------------------------------------------
+# Pipeline edge cases — previously untested paths
+# --------------------------------------------------------------------------
+
+class TestPartialQuoteGateDrop(unittest.TestCase):
+    """Proves partial drops work: some findings pass, some don't — not
+    all-or-nothing. This is the mixed case missing from the original suite."""
+
+    def test_two_of_three_pass_one_dropped(self):
+        source = (
+            "We are carbon neutral today through purchased offsets. "
+            "We are industry-leading with an unbaselined reduction. "
+            "Scope 1: 9,000 tCO2e. Scope 2: 4,000 tCO2e. " + ("narrative. " * 60)
+        )
+        llm = FakeLLM([_payload(
+            # T3 quote matches source — will be kept.
+            {"tell_id": "T3", "quote": "carbon neutral today through purchased offsets",
+             "rationale": "offsets"},
+            # T1 quote matches source — will be kept.
+            {"tell_id": "T1", "quote": "industry-leading with an unbaselined reduction",
+             "rationale": "no baseline"},
+            # T5 quote fabricated — will be dropped.
+            {"tell_id": "T5", "quote": "this phrase was invented by the LLM entirely",
+             "rationale": "fake superlative"},
+        )])
+        v = analyze_report("Acme", "x.pdf", FakeExtractor(text=source), llm)
+        # T3 + T1 (both MAJOR) survive the gate + Tier-1 T2 → Not Recommended.
+        self.assertEqual(v.state, VerdictState.NOT_RECOMMENDED)
+        kept_ids = {f.tell_id for f in v.findings if f.tier == Tier.TIER2}
+        self.assertIn("T3", kept_ids)
+        self.assertIn("T1", kept_ids)
+        self.assertNotIn("T5", kept_ids)  # dropped by quote gate
+
+    def test_single_finding_kept_single_dropped(self):
+        """One passes, one dropped → verdict uses only the kept one."""
+        source = (
+            "We are industry-leading in sustainability. "
+            "We commit to net-zero by 2050. " + ("filler content. " * 60)
+        )
+        llm = FakeLLM([_payload(
+            {"tell_id": "T5", "quote": "industry-leading in sustainability",
+             "rationale": "superlative"},
+            {"tell_id": "T1", "quote": "this is not in the source at all",
+             "rationale": "fabricated"},
+        )])
+        v = analyze_report("Acme", "x.pdf", FakeExtractor(text=source), llm)
+        tier2_ids = {f.tell_id for f in v.findings if f.tier == Tier.TIER2}
+        self.assertIn("T5", tier2_ids)
+        self.assertNotIn("T1", tier2_ids)
+
+
+class TestSchemaEdgeCases(unittest.TestCase):
+    """Edge cases for schema validation not covered in the original suite."""
+
+    def test_extra_keys_ignored(self):
+        """Extra keys on a finding dict are silently ignored (forward-compat)."""
+        result = validate_llm_payload({
+            "findings": [{
+                "tell_id": "T1",
+                "quote": "some quote",
+                "rationale": "some reason",
+                "confidence": 0.95,  # extra key — should not cause an error
+                "source_page": 12,   # another extra
+            }]
+        })
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["tell_id"], "T1")
+        # Extra keys should NOT be in the normalized output.
+        self.assertNotIn("confidence", result[0])
+        self.assertNotIn("source_page", result[0])
+
+    def test_extra_top_level_keys_ignored(self):
+        """Extra keys at the top level don't cause errors."""
+        result = validate_llm_payload({
+            "findings": [],
+            "model_version": "claude-3.5",
+        })
+        self.assertEqual(result, [])
+
+
+class TestUnicodeQuotes(unittest.TestCase):
+    """Real ESG reports contain em-dashes, degree symbols, accented names."""
+
+    def test_unicode_quote_matches(self):
+        source = "We reduced emissions by 50% — a major milestone for our company."
+        res = verify_quotes(
+            [{"tell_id": "T1", "quote": "reduced emissions by 50% — a major milestone",
+              "rationale": "r"}],
+            source,
+        )
+        self.assertEqual(len(res.kept), 1)
+
+    def test_degree_symbol_in_quote(self):
+        source = "We target limiting warming to 1.5°C as part of our strategy."
+        res = verify_quotes(
+            [{"tell_id": "T5", "quote": "limiting warming to 1.5°C",
+              "rationale": "r"}],
+            source,
+        )
+        self.assertEqual(len(res.kept), 1)
+
+
+class TestTier1Tier2Merge(unittest.TestCase):
+    """Pipeline must merge Tier-1 and Tier-2 findings before computing label."""
+
+    def test_tier1_and_tier2_combine_for_label(self):
+        """Tier-1 fires T2 (missing Scope 3, MAJOR) + Tier-2 T1 (MAJOR)
+        → combined 2 MAJOR → Not Recommended."""
+        source = (
+            "We are industry-leading with an unbaselined reduction in emissions. "
+            "Scope 1: 10,000 tCO2e. Scope 2: 5,000 tCO2e. "
+            + ("We commit to our green future. " * 40)
+        )
+        llm = FakeLLM([_payload(
+            {"tell_id": "T1",
+             "quote": "industry-leading with an unbaselined reduction",
+             "rationale": "no baseline"},
+        )])
+        v = analyze_report("Acme", "x.pdf", FakeExtractor(text=source), llm)
+        # T2 from Tier-1 (Scope 1/2 disclosed, Scope 3 absent) + T1 from Tier-2.
+        tiers = {(f.tell_id, f.tier) for f in v.findings}
+        self.assertIn(("T2", Tier.TIER1), tiers)
+        self.assertIn(("T1", Tier.TIER2), tiers)
+        self.assertEqual(v.state, VerdictState.NOT_RECOMMENDED)
+
+    def test_tier1_findings_drive_label_without_llm_findings(self):
+        """Tier-1 findings drive the label even when the LLM contributes nothing.
+        This verifies findings are not accidentally gated on LLM output."""
+        source = (
+            "Scope 1: 10,000 tCO2e. Scope 2: 5,000 tCO2e. "
+            + ("plain text without claim signal words. " * 40)
+        )
+        llm = FakeLLM([_payload()])  # LLM returns valid empty findings
+        v = analyze_report("Acme", "x.pdf", FakeExtractor(text=source), llm)
+        # Tier-1 T2 fires (Scope 3 absent) even though LLM found nothing.
+        self.assertTrue(any(f.tell_id == "T2" for f in v.findings))
+        # 1 MAJOR → Improving.
+        self.assertEqual(v.state, VerdictState.IMPROVING)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,52 @@
+{
+  "company": "GreenWash Co.",
+  "state": "Not Recommended",
+  "label": "Not Recommended",
+  "source_hash": "b1f25418a5c54e867778b10784a964e0852f334156c3833b42a4b8b29c6eeb9a",
+  "notes": "",
+  "findings": [
+    {
+      "tell_id": "T2",
+      "severity": "major",
+      "tier": "tier1",
+      "rationale": "Scope 1/2 emissions are disclosed with figures, but Scope 3 is never mentioned — the value chain (typically the majority of the footprint) is omitted entirely.",
+      "quote": ""
+    },
+    {
+      "tell_id": "T4",
+      "severity": "minor",
+      "tier": "tier1",
+      "rationale": "A long-dated target (2040-2060) and a net-zero/neutrality claim appear, but no interim milestone year (2025-2039) is stated — a promise with no nearer checkpoint.",
+      "quote": ""
+    },
+    {
+      "tell_id": "T1",
+      "severity": "major",
+      "tier": "tier2",
+      "rationale": "This claim states a reduction in environmental footprint without providing a baseline value or year.",
+      "quote": "We have made significant reductions in our environmental footprint and continue to improve year over year across all areas of our operations and value chain."
+    },
+    {
+      "tell_id": "T3",
+      "severity": "major",
+      "tier": "tier2",
+      "rationale": "The company claims carbon neutrality today, but explicitly states it is achieved primarily through purchased offsets, indicating a reliance on offsets rather than operational reductions. The phrase \"overwhelming majority\" strongly supports this.",
+      "quote": "We are pleased to announce that GreenWash Co. is carbon neutral today, achieved primarily through the purchase of high-quality carbon offsets from verified projects around the world. Offsets account for the overwhelming majority of our stated neutrality."
+    },
+    {
+      "tell_id": "T5",
+      "severity": "minor",
+      "tier": "tier2",
+      "rationale": "The report uses superlative language such as 'industry-leading' and 'world-class leader' to describe the company's sustainability efforts without providing any supporting data.",
+      "quote": "At GreenWash Co. we are proud to be an industry-leading, world-class leader in corporate sustainability."
+    }
+  ],
+  "slug": "greenwash-co",
+  "provenance": {
+    "publisher": "GreenWash Co. (synthetic sample)",
+    "edition_year": 2025,
+    "title": "Sustainability Report 2025 (synthetic test fixture)",
+    "url": "",
+    "retrieved": "2026-07-10"
+  }
+}

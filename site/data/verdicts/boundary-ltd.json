@@ -1,0 +1,24 @@
+{
+  "company": "BoundaryCase Ltd.",
+  "state": "Recommended",
+  "label": "Recommended",
+  "source_hash": "5d6a2166a85c8facfda3e01fe4a14c6e86915bafa44cc518b97c09a8ecdf5059",
+  "notes": "",
+  "findings": [
+    {
+      "tell_id": "T5",
+      "severity": "minor",
+      "tier": "tier2",
+      "rationale": "Uses the sustainability superlative 'world-class performance' without providing supporting metrics.",
+      "quote": "delivering world-class performance across every dimension of sustainability"
+    }
+  ],
+  "slug": "boundary-ltd",
+  "provenance": {
+    "publisher": "BoundaryCase Ltd. (synthetic sample)",
+    "edition_year": 2025,
+    "title": "Sustainability Report 2025 (synthetic test fixture)",
+    "url": "",
+    "retrieved": "2026-07-10"
+  }
+}
